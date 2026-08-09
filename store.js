@@ -4,8 +4,8 @@
  * Conexión viva a Supabase y catálogo offline de respaldo ultra premium
  */
 
-const SUPABASE_URL = 'https://qlinfgsqpzyhioqygevv.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaW5mZ3NxcHp5aGlvcXlnZXZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxNTY1NzcsImV4cCI6MjA5MjczMjU3N30.4AitjCtqVVNur8AV7FoA7Dp1mPoln8Ceazm4gpdJxT0';
+const SUPABASE_URL = 'https://vkrzxhlbfjqcdpdwrayu.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrcnp4aGxiZmpxY2RwZHdyYXl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYyMTQ5NjIsImV4cCI6MjEwMTc5MDk2Mn0.JiFAjXaA9e8je3MYhkevfKE7dx6Qr7t20ZDJpYk5yx0';
 
 let supabaseClient = null;
 let allProducts = [];
@@ -142,8 +142,7 @@ function initSupabase() {
 async function fetchProducts() {
     // Obtener id de comercio por URL opcional (ej: ?store=1)
     const urlParams = new URLSearchParams(window.location.search);
-    // Por defecto filtramos por el comercio 105 (PRUEBA SUPER BASE - Tienda de Ropa)
-    const storeId = urlParams.get('store') || urlParams.get('comercio') || '105';
+    const storeId = urlParams.get('store') || urlParams.get('comercio');
 
     if (supabaseClient) {
         try {
@@ -676,15 +675,19 @@ _Por favor, confírmame el stock disponible y los métodos de pago (transferenci
     if (supabaseClient) {
         try {
             const urlParams = new URLSearchParams(window.location.search);
-            const storeId = urlParams.get('store') || urlParams.get('comercio') || '105';
+            const storeId = urlParams.get('store') || urlParams.get('comercio');
             
-            const { error } = await supabaseClient.from('pedidos_web').insert([{
+            const payload = {
                 cliente_nombre: clientName,
                 detalles_pedido: detalles_pedido,
-                total: total, // Usar total en vez de cartTotal
-                estado: 'pendiente',
-                comercio_id: parseInt(storeId)
-            }]);
+                total: total,
+                estado: 'pendiente'
+            };
+            if (storeId) {
+                payload.comercio_id = parseInt(storeId);
+            }
+            
+            const { error } = await supabaseClient.from('pedidos_web').insert([payload]);
             
             if (error) {
                 console.error("Error guardando pedido en DB:", error);
