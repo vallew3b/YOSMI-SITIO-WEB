@@ -1,6 +1,6 @@
 /**
  * store.js
- * Lógica principal del catálogo de e-commerce "SITIO-WEB-DEXTER-TIENDA"
+ * Lógica principal del catálogo de e-commerce "YOSMISHOP"
  * Conexión viva a Supabase y catálogo offline de respaldo ultra premium
  */
 
@@ -638,7 +638,7 @@ async function processOrder() {
     
     // Compilar el mensaje de WhatsApp altamente premium
     const message = 
-`*NUEVO PEDIDO DESDE DEXTER TIENDA* 🛒
+`*NUEVO PEDIDO DESDE YOSMISHOP* 🛒
 ----------------------------------
 👤 *Cliente:* ${clientName}
 📅 *Fecha:* ${new Date().toLocaleDateString()}
